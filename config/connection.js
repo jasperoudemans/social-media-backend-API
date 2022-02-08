@@ -6,8 +6,9 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
+    // the two options below are apparently not supported
+    // useCreateIndex: true,
+    // useFindAndModify: false,
   }
 );
 
