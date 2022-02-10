@@ -1,5 +1,5 @@
 const express = require("express");
-const { User } = require("../models/user");
+const { User } = require("../models/User");
 const router = express.Router();
 const asyncHandler = require("express-async-handler");
 
@@ -36,11 +36,10 @@ router.delete("/:id", (req, res) => {
 router.post(
   "/:userId/friends/:friendId",
   asyncHandler(async (req, res) => {
-    const friend = await User.findById(req.params.friendId);
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
       {
-        $addToSet: { friends: friend },
+        $addToSet: { friends: req.params.friendId },
       },
       { new: true }
     );
@@ -52,11 +51,10 @@ router.post(
 router.delete(
   "/:userId/friends/:friendId",
   asyncHandler(async (req, res) => {
-    const friend = await User.findById(req.params.friendId);
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
       {
-        $pull: { friends: friend },
+        $pull: { friends: req.params.friendId },
       },
       { new: true }
     );
