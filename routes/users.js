@@ -49,4 +49,19 @@ router.post(
   })
 );
 
+router.delete(
+  "/:userId/friends/:friendId",
+  asyncHandler(async (req, res) => {
+    const friend = await User.findById(req.params.friendId);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      {
+        $pull: { friends: friend },
+      },
+      { new: true }
+    );
+    res.json(updatedUser);
+  })
+);
+
 module.exports = router;
