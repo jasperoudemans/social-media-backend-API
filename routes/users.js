@@ -1,6 +1,7 @@
 const express = require("express");
 const { User } = require("../models/user");
 const router = express.Router();
+const asyncHandler = require("express-async-handler");
 
 router.get("/", (req, res) => {
   User.find()
@@ -32,14 +33,20 @@ router.delete("/:id", (req, res) => {
   User.findByIdAndDelete(req.params.id).then((user) => res.json(user));
 });
 
-router.post("/:userId/friends/:friendId", (req, res) => {
-  User.findById(req.params.friendId).then((friend) => {
-    User.findByIdAndUpdate(req.params.userId, {
-      $addToSet: { friends: friend },
-    }).then(() => {
-      res.json(friend);
-    });
-  });
-});
+router.post(
+  "/:userId/friends/:friendId",
+  asyncHandler(async (req, res) => {
+    const friend = await User.findById(req.params.friendId);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      {
+        $addToSet: { friends: friend },
+      },
+      { new: true }
+    );
+
+    res.json(updatedUser);
+  })
+);
 
 module.exports = router;
