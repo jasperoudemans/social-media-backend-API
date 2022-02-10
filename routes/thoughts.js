@@ -17,7 +17,7 @@ router.post(
   asyncHandler(async (req, res) => {
     const newThought = await Thought.create(req.body);
     const updatedUser = await User.findByIdAndUpdate(req.body.userId, {
-      $addToSet: { thoughts: newThought },
+      $addToSet: { thoughts: newThought._id },
     });
     res.json(newThought);
   })
