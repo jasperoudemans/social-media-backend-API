@@ -32,4 +32,14 @@ router.delete("/:id", (req, res) => {
   User.findByIdAndDelete(req.params.id).then((user) => res.json(user));
 });
 
+router.post("/:userId/friends/:friendId", (req, res) => {
+  User.findById(req.params.friendId).then((friend) => {
+    User.findByIdAndUpdate(req.params.userId, {
+      $addToSet: { friends: friend },
+    }).then(() => {
+      res.json(friend);
+    });
+  });
+});
+
 module.exports = router;
