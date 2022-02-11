@@ -31,4 +31,22 @@ router.post(
   })
 );
 
+router.put(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const update = await Thought.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.json(update);
+  })
+);
+
+router.delete(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    await Thought.findByIdAndDelete(req.params.id);
+    res.status(200).send();
+  })
+);
+
 module.exports = router;
