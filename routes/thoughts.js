@@ -49,4 +49,16 @@ router.delete(
   })
 );
 
+router.post(
+  "/:thoughtId/reactions",
+  asyncHandler(async (req, res) => {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      { $addToSet: { reactions: req.body } },
+      { new: true }
+    );
+    res.json(updatedThought);
+  })
+);
+
 module.exports = router;
