@@ -14,7 +14,10 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  User.findById(req.params.id).then((user) => res.json(user));
+  User.findById(req.params.id)
+    .populate("friends")
+    .populate("thoughts")
+    .then((user) => res.json(user));
 });
 
 router.post("/", (req, res) => {

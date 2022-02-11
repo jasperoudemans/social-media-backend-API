@@ -12,6 +12,14 @@ router.get(
   })
 );
 
+router.get(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const thought = await Thought.findById(req.params.id);
+    res.json(thought);
+  })
+);
+
 router.post(
   "/",
   asyncHandler(async (req, res) => {
