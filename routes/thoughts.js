@@ -61,4 +61,18 @@ router.post(
   })
 );
 
+router.delete(
+  "/:thoughtId/reactions/:reactionId",
+  asyncHandler(async (req, res) => {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      {
+        $pull: { reactions: { reactionId: req.params.reactionId } },
+      },
+      { new: true }
+    );
+    res.json(updatedThought);
+  })
+);
+
 module.exports = router;
